@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded',() =>{
 
     if (button) {
         button.addEventListener('click', (event) =>{
-            fetch('/apiview',{
+            fetch('/api',{
                 method: 'GET'
             })
             .then(response => response.json())
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded',() =>{
 
 });
 
-alert(get_all('/apiview'))
+alert(get_all('/api'))
 
 
 

@@ -6,20 +6,32 @@ require 'json'
 module RootingViews
 
     class BaseView < WEBrick::HTTPServlet::AbstractServlet
+
+        PATH = nil
+
         def self.my_path
-            "/#{name.split('::').last.downcase}"
+            if self::PATH.nil? then 
+                "/#{name.split('::').last.downcase}"
+            else
+                self::PATH
+            end
         end
 
         
+       
+
+    end
+
+
+    class RootView  < BaseView
+
+        PATH = '/'
+
         def set_value_for_html(target_html_path,locals={})
             template_html_file = File.read(target_html_path)
             ERB.new(template_html_file).result_with_hash(locals)
         end
 
-    end
-
-
-    class TestView  < BaseView
         def do_GET(req,res)
             res['Content-Type'] = "text/html"
             return_file_path = File.join('statics','index.html')
@@ -32,10 +44,33 @@ module RootingViews
 
     end
 
-    class ApiView < BaseView
+    class BaseApiView < BaseView
+        PATH = '/api'
+
+        def POST(request_data_json)
+            puts request_data_json
+            {message: 'ポストされました。'}
+        end
+
+        def GET(query)
+            {message: 'invoked get method!'}.to_json
+        end
+
         def do_GET(rep,res)
+            puts 'called do_get'
             res['Content-Type'] = 'application/json'
-            res.body = { message: 'test_message' }.to_json
+            res.body = GET(req.query)
+        end
+
+        def do_POST(req,res)
+            data = JSON.parse(req.body)
+            res['Content-Type'] = 'application/json'
+            response_json = POST(data)
+            if response_json.nil? then
+                res.body= {}.to_json
+            else
+                res.body = response_json.to_json
+            end
         end
     end
 end
