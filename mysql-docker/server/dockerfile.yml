@@ -1,0 +1,12 @@
+FROM ruby:3.0.2
+
+WORKDIR /usr/src/app 
+
+COPY . .
+
+RUN bundle install 
+
+EXPOSE 8080
+
+CMD ["ruby","server.rb"]
+

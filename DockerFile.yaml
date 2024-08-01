@@ -1,0 +1,8 @@
+# imageは公式を使用
+FROM mysql:8.0 
+
+
+ENV MYSQL_ROOT_PASSWORD=sakusaku_12
+ENV MYSQL_DATABASE=sample_db
+ENV MYSQL_USER=sample_user
+ENV MYSQL_PASSWORD=user_sakusaku
